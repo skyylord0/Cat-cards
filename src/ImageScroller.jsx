@@ -11,6 +11,7 @@ export default function ImageScroller(props){
 	
 	useEffect(
 		()=>{
+			setImageList([]);
 			generateImage(url,setImageList)
 		},[url]
 	);

@@ -11,7 +11,7 @@ function App() {
     let base = "https://cataas.com/api/cats";
 
     if (type === "gif") {
-      base += "/gif";
+      base += "?tags=gif";
     }
 
     return base;
@@ -19,11 +19,11 @@ function App() {
 
   return (
     <div className="generalContainer">
-      <div className="title">CATS !!!!</div>
+		<div className="title">CATS !!!!</div>
 
-      <div className="toolbox">
-        <SelectType onTypeChange={setType} />
-      </div>
+		<div className="toolbox">
+			<SelectType onTypeChange={setType} />
+		</div>
 
 		<div className="ImageZone">
 			<ImageScroller url={imageURL()}/>
