@@ -1,0 +1,27 @@
+.scroller{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	width: 100%;
+	gap: 10px;
+}
+
+.card{
+	color: black;
+	max-width: 200px;
+	width: 100%;
+	height: auto;
+	max-height: 200px;
+	text-align: center;
+	background-color: #F0E1DD;
+	border: 1px solid #CAC8C7;
+	border-radius: 15px;
+}
+
+.catImage{
+	width: 100%;
+	height: auto;
+	margin: 2px;
+	border-radius: 15px;
+}
