@@ -40,3 +40,21 @@
 .read-the-docs {
   color: #888;
 }
+
+.card{
+	color: black;
+	width: 200px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	background-color: #F0E1DD;
+	border: 1px solid #CAC8C7;
+	border-radius: 15px;
+}
+
+.catImage{
+	width: 100%;
+	height: auto;
+	margin: 2px;
+	border-radius: 15px;
+}

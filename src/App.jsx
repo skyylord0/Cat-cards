@@ -6,10 +6,18 @@ import './App.css'
 function App() {
 
   return (
-    <div>
-      <img src="https://cataas.com/cat" class=""></img>
-    </div> 
-  )
+	<>
+		<div className="title">CATS !!!!</div>
+		<div className="toolbox">
+			<></>
+		</div>
+		<div className="">
+			<div className="card">
+			  <img src="https://cataas.com/cat" className="catImage"></img>
+			</div>
+		</div>
+	</>
+  );
 }
 
 
