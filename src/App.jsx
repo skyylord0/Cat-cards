@@ -1,24 +1,34 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import SelectType from './SelectType'
 
 function App() {
+  const [type, setType] = useState("image"); // default = static image
+
+  //Define the image URL path 
+  function imageURL() {
+    let base = "https://cataas.com/cat";
+
+    if (type === "gif") {
+      base += "/gif";
+    }
+
+    return base;
+  }
 
   return (
-	<>
-		<div className="title">CATS !!!!</div>
-		<div className="toolbox">
-			<></>
-		</div>
-		<div className="">
-			<div className="card">
-			  <img src="https://cataas.com/cat" className="catImage"></img>
-			</div>
-		</div>
-	</>
+    <>
+      <div className="title">CATS !!!!</div>
+
+      <div className="toolbox">
+        <SelectType onTypeChange={setType} />
+      </div>
+
+      <div className="card">
+        <img src={imageURL()} className="catImage" />
+      </div>
+    </>
   );
 }
 
-
-export default App
+export default App;
