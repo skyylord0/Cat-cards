@@ -1,23 +1,35 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import ImageScroller from './ImageScroller'
+import SelectType from './SelectType'
 
 function App() {
+  const [type, setType] = useState("image"); // default = static image
+
+  //Define the image URL path 
+  function imageURL() {
+    let base = "https://cataas.com/api/cats";
+
+    if (type === "gif") {
+      base += "/gif";
+    }
+
+    return base;
+  }
 
   return (
-	<div className="generalContainer">
-		<div className="title">CATS !!!!</div>
-		<div className="toolbox">
-			<></>
-		</div>
+    <div className="generalContainer">
+      <div className="title">CATS !!!!</div>
+
+      <div className="toolbox">
+        <SelectType onTypeChange={setType} />
+      </div>
+
 		<div className="ImageZone">
-			<ImageScroller url="https://cataas.com/api/cats"/>
+			<ImageScroller url={imageURL()}/>
 		</div>
-	</div>
+    </div>
   );
 }
 
-
-export default App
+export default App;
