@@ -7,26 +7,53 @@ function App() {
   const [type, setType] = useState("image"); // default = static image
   const [text, setText] = useState("");       // validated caption
   const [inputText, setInputText] = useState(""); // live typing
+  const [catId, setCatId] = useState(null);   // pinned cat ID
+  const [loading, setLoading] = useState(false);
 
-  //Define the image URL path 
+  // Fetch a new random cat and store its ID
+  async function handleNewCat() {
+    setLoading(true);
+    setText("");
+    setInputText("");
+
+    const endpoint = type === "gif"
+      ? "https://cataas.com/cat/gif?json=true"
+      : "https://cataas.com/cat?json=true";
+
+    try {
+      const res = await fetch(endpoint);
+      const jsonData = await res.json();
+      setCatId(jsonData.id);
+    } catch (err) {
+      console.error("Failed to fetch cat:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Apply caption to the current cat (no new fetch = same cat)
+  function handleAddCaption() {
+    setText(inputText);
+  }
+
+  // Define the image URL path
   function imageURL() {
+    if (!catId) return null;
+
     let base = "https://cataas.com/cat";
 
-    //If GIF type is selected
-    if (type === "gif") {
-      base += "/gif";
-    }
+    // Add the cat ID to pin the specific cat
+    base += "/" + catId;
 
     // Add code to put tags
 
-    //If text is added
-    //// A condition vrifiying if text is empty
+    // If text is added
     if (text !== "") {
-      const encodedText = encodeURIComponent(text)
+      const encodedText = encodeURIComponent(text);
       base += "/says/" + encodedText;
     }
 
-    console.log(base)
+    console.log(base);
     return base;
   }
 
@@ -39,12 +66,21 @@ function App() {
         <AddText
           inputText={inputText}
           onInputChange={setInputText}
-          onValidate={() => setText(inputText)}
+          onValidate={handleAddCaption}
         />
+        <button onClick={handleNewCat} disabled={loading}>
+          {loading ? "Loading..." : "🐱 New Cat"}
+        </button>
+        <button onClick={handleAddCaption} disabled={!catId}>
+          💬 Add Caption
+        </button>
       </div>
 
       <div className="card">
-        <img src={imageURL()} className="catImage" />
+        {catId
+          ? <img src={imageURL()} className="catImage" alt="a cat" />
+          : <p>Press "New Cat" to get started!</p>
+        }
       </div>
     </>
   );
