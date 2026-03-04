@@ -26,7 +26,6 @@ function App() {
     setLoading(true);
     setText("");
     setInputText("");
-    // setTag(""); // fetch a new random cat depending the tag 
 
     let endpoint = type === "gif"
       ? "https://cataas.com/cat/gif?json=true"
@@ -34,7 +33,8 @@ function App() {
 
     // add tag in the URL 
     // if (tag) { endpoint += `&tags=${tag}`; }
-    if (tag) { endpoint = `https://cataas.com/api/cats?tags=${tag}&skip=0&limit=1`}
+    //if (tag) { endpoint = `https://cataas.com/api/cats?tags=${tag}&skip=0&limit=1`}
+    if (tag) { endpoint = `https://cataas.com/api/cats?tags=${tag}`}
     console.log(endpoint)
 
     try {
@@ -43,8 +43,10 @@ function App() {
 
       // Cas du tag 
       if (Array.isArray(jsonData)) {
-        // Si la jsonData un array (cas du tag), on prend l'elt 0 du tableau
-        setCatId(jsonData[0].id) 
+        // Si la jsonData un array (cas du tag), on choisit au hasard l'index 
+       const randomIndex = Math.floor(Math.random() * jsonData.length)  
+        setCatId(jsonData[randomIndex].id) 
+        console.log(randomIndex)
       }
       else 
         // Cas sans tag 

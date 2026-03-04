@@ -9,9 +9,6 @@ function generateCatTags(event) {
   // passer le content quelque part avec le parent? 
   const content = event.target.value;
   onSearch(content)
-
-  //const url = `https://cataas.com/api/cats?tags=${content}`
-  //console.log(url);
   
 }
 
