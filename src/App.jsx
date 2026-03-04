@@ -1,11 +1,9 @@
 import { useState } from 'react'
+import { useEffect } from 'react'
 import './App.css'
-<<<<<<< HEAD
 import Search_bar from './SearchBar'
-=======
 import SelectType from './SelectType'
 import AddText from './AddText';
->>>>>>> origin/main
 
 function App() {
   const [type, setType] = useState("image"); // default = static image
@@ -13,21 +11,45 @@ function App() {
   const [inputText, setInputText] = useState(""); // live typing
   const [catId, setCatId] = useState(null);   // pinned cat ID
   const [loading, setLoading] = useState(false);
+  const [tag, setTag] = useState(""); // default -> no tag 
+
+    // use effect (tag)
+    useEffect(() => {
+      if (tag !== "") {
+        handleNewCat(tag);
+        console.log(tag);
+      }
+    }, [tag]);
 
   // Fetch a new random cat and store its ID
   async function handleNewCat() {
     setLoading(true);
     setText("");
     setInputText("");
+    // setTag(""); // fetch a new random cat depending the tag 
 
-    const endpoint = type === "gif"
+    let endpoint = type === "gif"
       ? "https://cataas.com/cat/gif?json=true"
       : "https://cataas.com/cat?json=true";
+
+    // add tag in the URL 
+    // if (tag) { endpoint += `&tags=${tag}`; }
+    if (tag) { endpoint = `https://cataas.com/api/cats?tags=${tag}&skip=0&limit=1`}
+    console.log(endpoint)
 
     try {
       const res = await fetch(endpoint);
       const jsonData = await res.json();
-      setCatId(jsonData.id);
+
+      // Cas du tag 
+      if (Array.isArray(jsonData)) {
+        // Si la jsonData un array (cas du tag), on prend l'elt 0 du tableau
+        setCatId(jsonData[0].id) 
+      }
+      else 
+        // Cas sans tag 
+      {setCatId(jsonData.id)}
+
     } catch (err) {
       console.error("Failed to fetch cat:", err);
     } finally {
@@ -38,6 +60,12 @@ function App() {
   // Apply caption to the current cat (no new fetch = same cat)
   function handleAddCaption() {
     setText(inputText);
+  }
+
+  // tag function 
+  function handleAddTag(content) {
+    setTag(content); // tag
+    console.log("tag", content)
   }
 
   // Define the image URL path
@@ -62,27 +90,7 @@ function App() {
   }
 
   return (
-<<<<<<< HEAD
-	<>
-		<div className="title">CATS !!!!</div>
-		<div className="toolbox">
-      <Search_bar />
 
-			<></>
-		</div>
-		<div className="">
-			<div className="card">
-			  <img src="https://cataas.com/cat" className="catImage"></img>
-			</div>
-		</div>
-	</>
-  );
-}
-
-
-
-export default App
-=======
     <>
       <div className="title">CATS !!!!</div>
 
@@ -99,6 +107,9 @@ export default App
         <button onClick={handleAddCaption} disabled={!catId}>
           💬 Add Caption
         </button>
+        <Search_bar
+          onSearch={handleAddTag}
+        />
       </div>
 
       <div className="card">
@@ -112,4 +123,3 @@ export default App
 }
 
 export default App;
->>>>>>> origin/main

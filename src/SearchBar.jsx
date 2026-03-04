@@ -1,22 +1,27 @@
-function Search_bar() {
+export default function Search_bar({onSearch}) {
 
-  return (
-      <input type="text" id="search_input" onKeyUp = {generateCatTags} placeholder="Search.."/>
-)
-
+// function to generate cat image with 'enter' key
 function generateCatTags(event) {
   if (event.code !== "Enter") {
         return
     }
 
-
+  // passer le content quelque part avec le parent? 
   const content = event.target.value;
-  const url = `https://cataas.com/api/cats?tags=${content}`
-  console.log(url);
+  onSearch(content)
+
+  //const url = `https://cataas.com/api/cats?tags=${content}`
+  //console.log(url);
   
 }
 
+  return (
+      <input 
+      type="text" 
+      id="search_input" 
+      onKeyUp = {generateCatTags} 
+      placeholder = "Search by tag(s)"
+      />
+)
 }
 
-
-export default Search_bar
