@@ -74,6 +74,9 @@ function App() {
         <button onClick={handleAddCaption} disabled={!catId}>
           💬 Add Caption
         </button>
+        <button onClick={handleDownload} disabled={!catId}>
+          ⬇️ Download
+        </button>
       </div>
 
       <div className="card">
@@ -84,6 +87,26 @@ function App() {
       </div>
     </>
   );
+
+  async function handleDownload() {
+  const url = imageURL();
+  if (!url) return;
+
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = `cat-${catId}.${type === "gif" ? "gif" : "jpg"}`;
+    a.click();
+
+    URL.revokeObjectURL(blobUrl);
+  } catch (err) {
+    console.error("Download failed:", err);
+  }
+  }
 }
 
 export default App;
