@@ -18,6 +18,33 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+.toolbox {
+  display: flex;          
+  flex-direction: row;   
+  align-items: center;   
+  justify-content: center;
+  gap: 12px;            
+  flex-wrap: wrap;        
+  padding: 20px;
+}
+
+.toolbox button {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;        
+  padding: 0 16px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.icon-small {
+  width: 20px;  
+  height: 20px;
+  object-fit: contain; 
+  vertical-align: middle;
+}
+
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);

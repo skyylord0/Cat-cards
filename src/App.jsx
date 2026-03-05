@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import SelectType from './SelectType'
 import AddText from './AddText';
+import listLogo from './assets/list_icon.png';
 
 function App() {
   const [type, setType] = useState("image"); // default = static image
@@ -9,6 +10,7 @@ function App() {
   const [inputText, setInputText] = useState(""); // live typing
   const [catId, setCatId] = useState(null);   // pinned cat ID
   const [loading, setLoading] = useState(false);
+  const [listDisplay, setListDisplay] = useState(false)
 
   // Fetch a new random cat and store its ID
   async function handleNewCat() {
@@ -63,17 +65,18 @@ function App() {
 
       <div className="toolbox">
         <SelectType onTypeChange={setType} />
+        <button onClick={handleNewCat} disabled={loading}>
+          {loading ? "Loading..." : "🐱 New Cat"}
+        </button>
         <AddText
           inputText={inputText}
           onInputChange={setInputText}
           onValidate={handleAddCaption}
         />
-        <button onClick={handleNewCat} disabled={loading}>
-          {loading ? "Loading..." : "🐱 New Cat"}
-        </button>
         <button onClick={handleAddCaption} disabled={!catId}>
           💬 Add Caption
         </button>
+        <ToggleButton/>
       </div>
 
       <div className="card">
@@ -83,6 +86,24 @@ function App() {
         }
       </div>
     </>
+  );
+}
+
+export function ToggleButton(){
+  const [listStatus, setListStatus] = useState(false);
+
+  const toggleList = () => setListStatus((b) => !b);
+
+  return (
+    <button
+      style = {{
+      backgroundColor: listStatus ? "#b4b4b4" : "#5c5c5c",
+      border: listStatus ? "3px solid white" : "1px solid transparent",
+    }}
+      onClick={toggleList}
+      >
+      <img src={listLogo} alt="list logo" className='icon-small'/>
+    </button>
   );
 }
 
