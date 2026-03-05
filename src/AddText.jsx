@@ -8,7 +8,7 @@ export default function AddText({ inputText, onInputChange, onValidate }) {
   return (
     <input
       type="text"
-      placeholder="Type caption and press Enter"
+      placeholder="Type caption"
       value={inputText}
       onChange={(e) => onInputChange(e.target.value)}
       onKeyUp={handleKeyUp}
