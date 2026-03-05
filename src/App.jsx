@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { useEffect } from 'react'
 import './App.css'
+import Search_bar from './SearchBar'
 import SelectType from './SelectType'
 import AddText from './AddText';
 import listLogo from './assets/list_icon.png';
@@ -10,7 +12,17 @@ function App() {
   const [inputText, setInputText] = useState(""); // live typing
   const [catId, setCatId] = useState(null);   // pinned cat ID
   const [loading, setLoading] = useState(false);
+  const [tag, setTag] = useState(""); // default -> no tag 
   const [listDisplay, setListDisplay] = useState(false)
+
+
+    // use effect (tag)
+    useEffect(() => {
+      if (tag !== "") {
+        handleNewCat(tag);
+        console.log(tag);
+      }
+    }, [tag]);
 
   // Fetch a new random cat and store its ID
   async function handleNewCat() {
@@ -18,14 +30,31 @@ function App() {
     setText("");
     setInputText("");
 
-    const endpoint = type === "gif"
+    let endpoint = type === "gif"
       ? "https://cataas.com/cat/gif?json=true"
       : "https://cataas.com/cat?json=true";
+
+    // add tag in the URL 
+    // if (tag) { endpoint += `&tags=${tag}`; }
+    //if (tag) { endpoint = `https://cataas.com/api/cats?tags=${tag}&skip=0&limit=1`}
+    if (tag) { endpoint = `https://cataas.com/api/cats?tags=${tag}`}
+    console.log(endpoint)
 
     try {
       const res = await fetch(endpoint);
       const jsonData = await res.json();
-      setCatId(jsonData.id);
+
+      // Cas du tag 
+      if (Array.isArray(jsonData)) {
+        // Si la jsonData un array (cas du tag), on choisit au hasard l'index 
+       const randomIndex = Math.floor(Math.random() * jsonData.length)  
+        setCatId(jsonData[randomIndex].id) 
+        console.log(randomIndex)
+      }
+      else 
+        // Cas sans tag 
+      {setCatId(jsonData.id)}
+
     } catch (err) {
       console.error("Failed to fetch cat:", err);
     } finally {
@@ -36,6 +65,12 @@ function App() {
   // Apply caption to the current cat (no new fetch = same cat)
   function handleAddCaption() {
     setText(inputText);
+  }
+
+  // tag function 
+  function handleAddTag(content) {
+    setTag(content); // tag
+    console.log("tag", content)
   }
 
   const handleDisplayChange = (newListDisplay) => {
@@ -86,6 +121,9 @@ function App() {
                 <button onClick={handleAddCaption} disabled={!catId}>
                 💬 Add Caption
                 </button>
+                  <Search_bar 
+                  onSearch={handleAddTag}/>
+                
                 <button onClick={handleDownload} disabled={!catId}>
                 ⬇️ Download
                 </button>
