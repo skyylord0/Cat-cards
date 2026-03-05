@@ -64,48 +64,44 @@ function App() {
   }
 
   return (
-    <>
-      <div className="title">CATS !!!!</div>
-
-      <div className="toolbox">
-        <div className="listDisplayBox">
-          <ToggleButton onListDisplayChange={handleDisplayChange}/>
+    <div className = "application">
+      <div className="title">Get images of cats !</div>
+      <div className="mainWindow">
+        <div className="toolbox">
+          <div className="listDisplayBox">
+            <ToggleButton onListDisplayChange={handleDisplayChange}/>
+          </div>
+          <div className="imageToolBox">
+            <SelectType onTypeChange={setType} />
+            {!listDisplay && (
+              <>
+                <button onClick={handleNewCat} disabled={loading}>
+                  {loading ? "Loading..." : "🐱 New Cat"}
+                </button>
+                <AddText
+                  inputText={inputText}
+                  onInputChange={setInputText}
+                  onValidate={handleAddCaption}
+                />
+                <button onClick={handleAddCaption} disabled={!catId}>
+                💬 Add Caption
+                </button>
+                <button onClick={handleDownload} disabled={!catId}>
+                ⬇️ Download
+                </button>
+              </>
+            )}
+          </div>
         </div>
-        <div className="imageToolBox">
-          <SelectType onTypeChange={setType} />
-          <button onClick={handleNewCat} disabled={loading}>
-            {loading ? "Loading..." : "🐱 New Cat"}
-          </button>
 
-          {!listDisplay && (
-            <>
-              <AddText
-                inputText={inputText}
-                onInputChange={setInputText}
-                onValidate={handleAddCaption}
-              />
-              <button onClick={handleAddCaption} disabled={!catId}>
-              💬 Add Caption
-              </button>
-            </>
-            
-          )}
-
-          {!listDisplay && (
-            <button onClick={handleDownload} disabled={!catId}>
-            ⬇️ Download
-            </button>
-          )}
+        <div className="card">
+          {catId
+            ? <img src={imageURL()} className="catImage" alt="a cat" />
+            : <p>Press "New Cat" to get started!</p>
+          }
         </div>
       </div>
-
-      <div className="card">
-        {catId
-          ? <img src={imageURL()} className="catImage" alt="a cat" />
-          : <p>Press "New Cat" to get started!</p>
-        }
-      </div>
-    </>
+    </div>
   );
 
   async function handleDownload() {
@@ -140,7 +136,7 @@ export function ToggleButton({onListDisplayChange}){
   return (
     <button
       style = {{
-      backgroundColor: listDisplay ? "#b4b4b4" : "#5c5c5c",
+      backgroundColor: listDisplay ? "#d3d3d3" : "#8a8a8a",
       border: listDisplay ? "3px solid white" : "1px solid transparent",
     }}
       onClick={handleDisplayChange}
