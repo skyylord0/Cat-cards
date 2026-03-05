@@ -4,7 +4,9 @@ import './App.css'
 import Search_bar from './SearchBar'
 import SelectType from './SelectType'
 import AddText from './AddText';
-import listLogo from './assets/list_icon.png';
+import CardList from './CardList';
+import ToggleButton from './ToggleButton'
+
 
 function App() {
   const [type, setType] = useState("image"); // default = static image
@@ -62,6 +64,26 @@ function App() {
     }
   }
 
+  async function handleDownload() {
+    const url = imageURL();
+    if (!url) return;
+
+    try {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = `cat-${catId}.${type === "gif" ? "gif" : "jpg"}`;
+      a.click();
+
+      URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      console.error("Download failed:", err);
+    }
+  }
+
   // Apply caption to the current cat (no new fetch = same cat)
   function handleAddCaption() {
     setText(inputText);
@@ -108,79 +130,60 @@ function App() {
           </div>
           <div className="imageToolBox">
             <SelectType onTypeChange={setType} />
+
+            {/**Only when in single display mode : */}
             {!listDisplay && (
               <>
+
+                {/**Tag filter bar */}
+                <Search_bar 
+                  onSearch={handleAddTag}/>
+
+                {/**New cat button */}
                 <button onClick={handleNewCat} disabled={loading}>
                   {loading ? "Loading..." : "🐱 New Cat"}
                 </button>
+                
+                {/**Caption input */}
                 <AddText
                   inputText={inputText}
                   onInputChange={setInputText}
                   onValidate={handleAddCaption}
                 />
+
+                {/**Add caption button */}
                 <button onClick={handleAddCaption} disabled={!catId}>
                 💬 Add Caption
                 </button>
-                  <Search_bar 
-                  onSearch={handleAddTag}/>
-                
+
+                {/**Download button */} 
                 <button onClick={handleDownload} disabled={!catId}>
                 ⬇️ Download
                 </button>
+
               </>
             )}
+
           </div>
         </div>
-
-        <div className="card">
+        
+        {listDisplay? 
+        (
+          <CardList/>
+        ) 
+        : 
+        (
+          <div className="card">
           {catId
             ? <img src={imageURL()} className="catImage" alt="a cat" />
             : <p>Press "New Cat" to get started!</p>
           }
-        </div>
+          </div>
+        )
+        }
+        
       </div>
     </div>
-  );
-
-  async function handleDownload() {
-  const url = imageURL();
-  if (!url) return;
-
-  try {
-    const res = await fetch(url);
-    const blob = await res.blob();
-    const blobUrl = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = blobUrl;
-    a.download = `cat-${catId}.${type === "gif" ? "gif" : "jpg"}`;
-    a.click();
-
-    URL.revokeObjectURL(blobUrl);
-  } catch (err) {
-    console.error("Download failed:", err);
-  }
-  }
-}
-
-export function ToggleButton({onListDisplayChange}){
-  const [listDisplay, setListDisplay] = useState(false);
-
-  const handleDisplayChange = () => {
-    onListDisplayChange(!listDisplay);
-    setListDisplay(!listDisplay);
-  }
-
-  return (
-    <button
-      style = {{
-      backgroundColor: listDisplay ? "#d3d3d3" : "#8a8a8a",
-      border: listDisplay ? "3px solid white" : "1px solid transparent",
-    }}
-      onClick={handleDisplayChange}
-      >
-      <img src={listLogo} alt="list logo" className='icon-small'/>
-    </button>
   );
 }
 
