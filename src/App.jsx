@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import SelectType from './SelectType'
 import AddText from './AddText';
+import listLogo from './assets/list_icon.png';
 
 function App() {
   const [type, setType] = useState("image"); // default = static image
@@ -9,6 +10,7 @@ function App() {
   const [inputText, setInputText] = useState(""); // live typing
   const [catId, setCatId] = useState(null);   // pinned cat ID
   const [loading, setLoading] = useState(false);
+  const [listDisplay, setListDisplay] = useState(false)
 
   // Fetch a new random cat and store its ID
   async function handleNewCat() {
@@ -36,6 +38,10 @@ function App() {
     setText(inputText);
   }
 
+  const handleDisplayChange = (newListDisplay) => {
+    setListDisplay(newListDisplay)
+  }
+
   // Define the image URL path
   function imageURL() {
     if (!catId) return null;
@@ -58,34 +64,44 @@ function App() {
   }
 
   return (
-    <>
-      <div className="title">CATS !!!!</div>
+    <div className = "application">
+      <div className="title">Get images of cats !</div>
+      <div className="mainWindow">
+        <div className="toolbox">
+          <div className="listDisplayBox">
+            <ToggleButton onListDisplayChange={handleDisplayChange}/>
+          </div>
+          <div className="imageToolBox">
+            <SelectType onTypeChange={setType} />
+            {!listDisplay && (
+              <>
+                <button onClick={handleNewCat} disabled={loading}>
+                  {loading ? "Loading..." : "🐱 New Cat"}
+                </button>
+                <AddText
+                  inputText={inputText}
+                  onInputChange={setInputText}
+                  onValidate={handleAddCaption}
+                />
+                <button onClick={handleAddCaption} disabled={!catId}>
+                💬 Add Caption
+                </button>
+                <button onClick={handleDownload} disabled={!catId}>
+                ⬇️ Download
+                </button>
+              </>
+            )}
+          </div>
+        </div>
 
-      <div className="toolbox">
-        <SelectType onTypeChange={setType} />
-        <AddText
-          inputText={inputText}
-          onInputChange={setInputText}
-          onValidate={handleAddCaption}
-        />
-        <button onClick={handleNewCat} disabled={loading}>
-          {loading ? "Loading..." : "🐱 New Cat"}
-        </button>
-        <button onClick={handleAddCaption} disabled={!catId}>
-          💬 Add Caption
-        </button>
-        <button onClick={handleDownload} disabled={!catId}>
-          ⬇️ Download
-        </button>
+        <div className="card">
+          {catId
+            ? <img src={imageURL()} className="catImage" alt="a cat" />
+            : <p>Press "New Cat" to get started!</p>
+          }
+        </div>
       </div>
-
-      <div className="card">
-        {catId
-          ? <img src={imageURL()} className="catImage" alt="a cat" />
-          : <p>Press "New Cat" to get started!</p>
-        }
-      </div>
-    </>
+    </div>
   );
 
   async function handleDownload() {
@@ -107,6 +123,27 @@ function App() {
     console.error("Download failed:", err);
   }
   }
+}
+
+export function ToggleButton({onListDisplayChange}){
+  const [listDisplay, setListDisplay] = useState(false);
+
+  const handleDisplayChange = () => {
+    onListDisplayChange(!listDisplay);
+    setListDisplay(!listDisplay);
+  }
+
+  return (
+    <button
+      style = {{
+      backgroundColor: listDisplay ? "#d3d3d3" : "#8a8a8a",
+      border: listDisplay ? "3px solid white" : "1px solid transparent",
+    }}
+      onClick={handleDisplayChange}
+      >
+      <img src={listLogo} alt="list logo" className='icon-small'/>
+    </button>
+  );
 }
 
 export default App;
