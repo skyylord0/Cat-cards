@@ -38,6 +38,10 @@ function App() {
     setText(inputText);
   }
 
+  const handleDisplayChange = (newListDisplay) => {
+    setListDisplay(newListDisplay)
+  }
+
   // Define the image URL path
   function imageURL() {
     if (!catId) return null;
@@ -64,19 +68,35 @@ function App() {
       <div className="title">CATS !!!!</div>
 
       <div className="toolbox">
-        <SelectType onTypeChange={setType} />
-        <button onClick={handleNewCat} disabled={loading}>
-          {loading ? "Loading..." : "🐱 New Cat"}
-        </button>
-        <AddText
-          inputText={inputText}
-          onInputChange={setInputText}
-          onValidate={handleAddCaption}
-        />
-        <button onClick={handleAddCaption} disabled={!catId}>
-          💬 Add Caption
-        </button>
-        <ToggleButton/>
+        <div className="listDisplayBox">
+          <ToggleButton onListDisplayChange={handleDisplayChange}/>
+        </div>
+        <div className="imageToolBox">
+          <SelectType onTypeChange={setType} />
+          <button onClick={handleNewCat} disabled={loading}>
+            {loading ? "Loading..." : "🐱 New Cat"}
+          </button>
+
+          {!listDisplay && (
+            <>
+              <AddText
+                inputText={inputText}
+                onInputChange={setInputText}
+                onValidate={handleAddCaption}
+              />
+              <button onClick={handleAddCaption} disabled={!catId}>
+              💬 Add Caption
+              </button>
+            </>
+            
+          )}
+
+          {!listDisplay && (
+            <button onClick={handleDownload} disabled={!catId}>
+            ⬇️ Download
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="card">
@@ -87,20 +107,43 @@ function App() {
       </div>
     </>
   );
+
+  async function handleDownload() {
+  const url = imageURL();
+  if (!url) return;
+
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = `cat-${catId}.${type === "gif" ? "gif" : "jpg"}`;
+    a.click();
+
+    URL.revokeObjectURL(blobUrl);
+  } catch (err) {
+    console.error("Download failed:", err);
+  }
+  }
 }
 
-export function ToggleButton(){
-  const [listStatus, setListStatus] = useState(false);
+export function ToggleButton({onListDisplayChange}){
+  const [listDisplay, setListDisplay] = useState(false);
 
-  const toggleList = () => setListStatus((b) => !b);
+  const handleDisplayChange = () => {
+    onListDisplayChange(!listDisplay);
+    setListDisplay(!listDisplay);
+  }
 
   return (
     <button
       style = {{
-      backgroundColor: listStatus ? "#b4b4b4" : "#5c5c5c",
-      border: listStatus ? "3px solid white" : "1px solid transparent",
+      backgroundColor: listDisplay ? "#b4b4b4" : "#5c5c5c",
+      border: listDisplay ? "3px solid white" : "1px solid transparent",
     }}
-      onClick={toggleList}
+      onClick={handleDisplayChange}
       >
       <img src={listLogo} alt="list logo" className='icon-small'/>
     </button>
