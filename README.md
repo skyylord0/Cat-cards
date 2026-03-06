@@ -1,4 +1,4 @@
-# 🐱 CatApp
+# 🐱 Cat-cards
 
 A React application that lets you browse, search, and customize cat images using the [CATAAS (Cat as a Service)](https://cataas.com) API.
 
