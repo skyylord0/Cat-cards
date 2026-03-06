@@ -90,6 +90,9 @@ function App() {
               </>
             ) : (
               <>
+                <button onClick={() => handleNewCats(0)}>
+                  Refresh selection
+                </button>
                 <button onClick={handlePreviousCats}>
                   Previous 20 cats 🐱
                 </button>
