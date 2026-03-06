@@ -47,7 +47,7 @@ function App() {
       } else {
         handleNewCat();
       }
-  }, [tag, listDisplay]);
+  }, [tag]);
 
   //Fetch cats when list display is first activated
   useEffect(() => {
