@@ -14,7 +14,7 @@ A React application that lets you browse, search, and customize cat images using
 ## Tech Stack
 
 - [React](https://react.dev/) with hooks (`useState`, `useEffect`)
-- [Vite](https://vitejs.dev/) (assumed build tool)
+- [Vite](https://vitejs.dev/) 
 - [CATAAS API](https://cataas.com/doc.html) — free public cat image API
 
 ## Project Structure
