@@ -42,13 +42,11 @@ function App() {
 
   //Fetch cat when tag changes
   useEffect(() => {
-    if (tag !== "") {
       if (listDisplay) {
         handleNewCats(0);
       } else {
         handleNewCat();
       }
-    }
   }, [tag, listDisplay]);
 
   //Fetch cats when list display is first activated
