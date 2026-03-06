@@ -5,6 +5,10 @@ function useCat(type, tag){
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState("");       // validated caption
     const [inputText, setInputText] = useState(""); // live typing
+    const [catsInfo, setCatsInfo] = useState(null) //Only used for the list display
+    const [currentIndex, setCurrentIndex] = useState(0)
+
+    const batchSize = 20; //Size of each batch of cat fetched when in list display
 
     // Fetch a new random cat and store its ID
     async function handleNewCat() {
@@ -44,20 +48,60 @@ function useCat(type, tag){
         }
     }
 
-    // Fetch a list of cats
-    async function handleNewCats(){
+    // Set the list to the previous batch of cats
+    function handlePreviousCats(){
+        if (currentIndex < batchSize) return
+        handleNewCats(currentIndex-batchSize)
+        setCurrentIndex(currentIndex-batchSize)
+    }
+
+    // Set the list to the next batch of cats
+    function handleNextCats(){
+        handleNewCats(currentIndex+batchSize)
+        setCurrentIndex(currentIndex+batchSize)
+    }
+
+    // Fetch a list of cats as a json object stored in catsInfo
+    async function handleNewCats(index = currentIndex){
         setLoading(true);
         setText("");
         setInputText("");
-
-        let endpoint = type === "gif"
-        ? "https://cataas.com/api/cats?tags=gif"
-        : "https://cataas.com/api/cat";
-
-        if (tag) { endpoint = `https://cataas.com/api/cats?tags=${tag}`}
-        console.log(endpoint)
         
-        //WIP
+        let endpoint;
+
+        if (tag&&type=="gif") { endpoint = `https://cataas.com/api/cats?tags=gif,${tag}&`}
+        else if (tag) {endpoint = `https://cataas.com/api/cats?tags=${tag}&`}
+        else if (type=="gif") {endpoint = `https://cataas.com/api/cats?tags=gif&`}
+        else {endpoint = `https://cataas.com/api/cats?`}
+
+        endpoint += `skip=${index}&limit=${batchSize}`
+
+        console.log(endpoint)
+
+        try {
+            const res = await fetch(endpoint);
+            const jsonData = await res.json();
+            setCatsInfo(jsonData)
+        } catch (err) {
+        console.error("Failed to fetch cat:", err);
+        } finally {
+        setLoading(false);
+        }
+    }
+
+    // Return a list of images to load when in list display mode
+    function imageList(){
+        if (!catsInfo) return null;
+        let base = "https://cataas.com/cat/";
+
+        const catImageList = [];
+        const catIdList = [];
+        
+        for(let i=0;i<batchSize;i++){
+            catImageList.push(base + catsInfo[i].id);
+            catIdList.push(catsInfo[i].id)
+        }
+        return {catImageList, catIdList};
 
     }
 
@@ -78,7 +122,6 @@ function useCat(type, tag){
         base += "/says/" + encodedText;
         }
 
-        console.log(base);
         return base;
     }
 
@@ -107,15 +150,23 @@ function useCat(type, tag){
         }
     }
 
+    const { catImageList, catIdList } = imageList() || { catImageList: null, catIdList: null };
+
     return { 
-        catId, 
+        catId,
+        setCatId,
         loading, 
         inputText, 
         setInputText, 
-        handleNewCat, 
+        handleNewCat,
+        handleNewCats,
+        handlePreviousCats,
+        handleNextCats,
         handleAddCaption, 
         handleDownload, 
-        currentImage: imageURL() 
+        currentImage: imageURL(),
+        catImageList,
+        catIdList
     };
 }
 

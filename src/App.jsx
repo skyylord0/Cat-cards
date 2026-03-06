@@ -15,8 +15,10 @@ function App() {
 
   //Fetch cat
   const { 
-    catId, loading, inputText, setInputText, 
-    handleNewCat, handleAddCaption, handleDownload, currentImage 
+    catId, setCatId, loading, inputText, setInputText, 
+    handleNewCat, handleNewCats, handlePreviousCats, handleNextCats,
+    handleAddCaption, handleDownload, 
+    currentImage, catImageList, catIdList
   } = useCat(type, tag);
 
   //Fetch cat when tag changes
@@ -25,6 +27,13 @@ function App() {
       handleNewCat(tag);
     }
   }, [tag]);
+
+  //Fetch cats when list display is first activated
+  useEffect(() => {
+    if (listDisplay) {
+      handleNewCats();
+    }
+  }, [listDisplay]);
 
   return (
     <div className="application">
@@ -39,10 +48,9 @@ function App() {
           </div>
           <div className="imageToolBox">
             <SelectType onTypeChange={setType} />
-            {!listDisplay && (
+            <Search_bar onSearch={setTag}/>
+            {!listDisplay ? (
               <>
-                <Search_bar onSearch={setTag}/>
-
                 <button onClick={handleNewCat} disabled={loading}>
                   {loading ? "Loading..." : "🐱 New Cat"}
                 </button>
@@ -56,13 +64,32 @@ function App() {
                 <button onClick={handleAddCaption} disabled={!catId}>💬 Add Caption</button>
                 <button onClick={handleDownload} disabled={!catId}>⬇️ Download</button>
               </>
+            ) : (
+              <>
+                <button onClick={handlePreviousCats}>
+                  Previous 20 cats 🐱
+                </button>
+                <button onClick={handleNextCats}>
+                  Next 20 cats 🐱
+                </button>
+              </>
             )}
           </div>
         </div>
         
         <div className="displayArea">
           {listDisplay ? (
-            <CardList />
+            catImageList ? (
+                <CardList 
+                  imageList={catImageList}
+                  idList={catIdList}
+                  onImageClickIdChange={setCatId}
+                  onImageClickDisplayChange={setListDisplay}/>
+            ) : (
+                <div className="loader-container">
+                    <p>Loading...</p>
+                </div>
+            )    
           ) : (
             <div className="card">
               {catId ? (

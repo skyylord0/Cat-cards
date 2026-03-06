@@ -119,6 +119,32 @@
 	border-radius: 15px;
 }
 
+.cardSmall{
+	color: black;
+	margin: 5px;
+  /* Total width = 20% of parent minus the 10px used by margins */
+  width: 100%;
+	text-align: center;
+	background-color: #797979;
+	border: 1px solid #797979;
+	border-radius: 15px;
+}
+
+.catImage {
+  width: 100%;    /* Takes up the full width of .cardSmall */
+  height: auto;   /* Maintains aspect ratio */
+  display: block; /* Removes weird bottom whitespace */
+}
+
+.cardContainer {
+  column-count: 5;
+  column-gap: 10px;
+  width: 100%;
+}
+.displayArea{
+  width: 100%;
+}
+
 .catImage{
 	width: 100%;
 	height: auto;
