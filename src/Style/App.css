@@ -167,6 +167,7 @@
 }
 
 .suggestion {
+  cursor: pointer;
   position: absolute;
   top: 100%; /* dropdown appears below the input */
   left: 0;
