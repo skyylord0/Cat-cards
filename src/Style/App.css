@@ -162,8 +162,10 @@
 /* Suggestion CSS */ 
 .search-container {
   position: relative;
-  display: inline-flex;
-  gap: 8px;
+  display: inline-block;
+}
+#search_input {
+  margin-right: 8px;
 }
 
 .suggestion {
