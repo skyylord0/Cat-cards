@@ -166,6 +166,7 @@
 }
 
 .suggestion {
+  cursor: pointer;
   position: absolute;
   top: 100%; /* Juste en dessous de l'input */
   left: 0;

@@ -40,10 +40,10 @@ function handleClickSuggestion(tag) {
       placeholder = "Search by tag(s)"
       />
 
-      /* show list suggestion */
+
       {value !== "" && (
       <ul className = "suggestion"> 
-      /* for each elt */ 
+ 
       {suggestion.map((tag) => 
       (
         <li 
