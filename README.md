@@ -43,8 +43,8 @@ src/
 ### Installation
 
 ```bash
-git clone <your-repo-url>
-cd catapp
+git clone https://github.com/skyylord0/Cat-cards.git
+cd Cat-cards
 npm install
 ```
 
