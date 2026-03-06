@@ -26,6 +26,12 @@ function handleClickSuggestion(tag) {
   setValue(""); 
 }
 
+// Clear the search and reset the tag 
+function handleClear() {
+  setValue("");
+  onSearch("");
+}
+
 
   return (
     <div className = "search-container">
@@ -39,9 +45,13 @@ function handleClickSuggestion(tag) {
       placeholder = "Search by tag(s)"
       />
 
+      <button onClick={handleClear} title = "Clear tag">
+        Clear tag(s)
+      </button>
+
       {value !== "" && (
       <ul className = "suggestion"> 
-      
+
       {suggestion.map((tag) => 
       (
         <li 

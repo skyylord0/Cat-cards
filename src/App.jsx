@@ -44,7 +44,7 @@ function App() {
   useEffect(() => {
     if (tag !== "") {
       if (listDisplay) {
-        handleNewCats();
+        handleNewCats(0);
       } else {
         handleNewCat();
       }

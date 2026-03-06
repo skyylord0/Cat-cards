@@ -162,7 +162,8 @@
 /* Suggestion CSS */ 
 .search-container {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  gap: 8px;
 }
 
 .suggestion {
