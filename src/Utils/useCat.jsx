@@ -44,6 +44,23 @@ function useCat(type, tag){
         }
     }
 
+    // Fetch a list of cats
+    async function handleNewCats(){
+        setLoading(true);
+        setText("");
+        setInputText("");
+
+        let endpoint = type === "gif"
+        ? "https://cataas.com/api/cats?tags=gif"
+        : "https://cataas.com/api/cat";
+
+        if (tag) { endpoint = `https://cataas.com/api/cats?tags=${tag}`}
+        console.log(endpoint)
+        
+        //WIP
+
+    }
+
     // Get the image URL corresponding to the current cat
     function imageURL() {
         if (!catId) return null;

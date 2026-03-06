@@ -31,11 +31,12 @@ function App() {
       <div className="title">Get images of cats !</div>
       <div className="mainWindow">
         <div className="toolbox">
-          <ToggleButton
-            className="listDisplay"
-            listDisplay={listDisplay}
-            onListDisplayChange={setListDisplay}
-          />
+          <div className='listDisplay'>
+            <ToggleButton
+              listDisplay={listDisplay}
+              onListDisplayChange={setListDisplay}
+            />
+          </div>
           <div className="imageToolBox">
             <SelectType onTypeChange={setType} />
             {!listDisplay && (

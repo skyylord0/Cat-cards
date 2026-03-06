@@ -43,6 +43,7 @@
 .listDisplay {
   grid-column: 1; /* Stays in the first slot */
   display: flex;
+  width: fit-content;
   margin-left: 40px;
   justify-content: flex-start;
 }
