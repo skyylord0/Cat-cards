@@ -40,10 +40,10 @@
   background-color: #5f5f5f;
 }
 
-.listDisplayBox {
+.listDisplay {
   grid-column: 1; /* Stays in the first slot */
   display: flex;
-  margin-left: 20px;
+  margin-left: 40px;
   justify-content: flex-start;
 }
 

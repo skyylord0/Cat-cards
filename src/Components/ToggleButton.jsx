@@ -1,12 +1,10 @@
 import { useState } from 'react'
-import listLogo from './assets/list_icon.png';
+import listLogo from '../assets/list_icon.png';
 
-function ToggleButton({onListDisplayChange}){
-  const [listDisplay, setListDisplay] = useState(false);
+function ToggleButton({listDisplay, onListDisplayChange}){
 
   const handleDisplayChange = () => {
     onListDisplayChange(!listDisplay);
-    setListDisplay(!listDisplay);
   }
 
   return (
