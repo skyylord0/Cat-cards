@@ -97,7 +97,10 @@ function useCat(type, tag){
         const catImageList = [];
         const catIdList = [];
         
-        for(let i=0;i<batchSize;i++){
+        // Ensure we don't exceed the batch size or the available data length
+        const limit = Math.min(batchSize, catsInfo.length)
+
+        for(let i=0; i < limit; i++){
             catImageList.push(base + catsInfo[i].id);
             catIdList.push(catsInfo[i].id)
         }

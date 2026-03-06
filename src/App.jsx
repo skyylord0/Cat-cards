@@ -11,6 +11,7 @@ import useCat from './Utils/useCat'
 function App() {
   const [type, setType] = useState("image"); // default = static image
   const [tag, setTag] = useState(""); // default -> no tag 
+  const [allTags, setAllTags] = useState([]);
   const [listDisplay, setListDisplay] = useState(false) // Set wether to use the list or single image display
 
   //Fetch cat
@@ -21,12 +22,34 @@ function App() {
     currentImage, catImageList, catIdList
   } = useCat(type, tag);
 
+    // fetchTags for suggestions in the search bar 
+    useEffect(() => {
+      
+      async function fetchTags() {
+        try {
+          const res = await fetch("https://cataas.com/api/tags");
+          const data = await res.json();
+
+          //Store data in allTags 
+          setAllTags(data)
+        }
+        catch (err) {
+          console.error("Failed to fetch tags", err);
+        }
+      }
+      fetchTags();
+    }, [])
+
   //Fetch cat when tag changes
   useEffect(() => {
     if (tag !== "") {
-      handleNewCat(tag);
+      if (listDisplay) {
+        handleNewCats();
+      } else {
+        handleNewCat();
+      }
     }
-  }, [tag]);
+  }, [tag, listDisplay]);
 
   //Fetch cats when list display is first activated
   useEffect(() => {
@@ -48,7 +71,10 @@ function App() {
           </div>
           <div className="imageToolBox">
             <SelectType onTypeChange={setType} />
-            <Search_bar onSearch={setTag}/>
+            <Search_bar 
+              onSearch={setTag}
+              tags={allTags}
+            />
             {!listDisplay ? (
               <>
                 <button onClick={handleNewCat} disabled={loading}>
