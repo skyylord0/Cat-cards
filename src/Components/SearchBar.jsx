@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 export default function Search_bar({onSearch, tags}) {
-//State
 const [value, setValue] = useState("");
 
 // function to generate cat image with 'enter' key
@@ -27,6 +26,12 @@ function handleClickSuggestion(tag) {
   setValue(""); 
 }
 
+// Clear the search and reset the tag 
+function handleClear() {
+  setValue("");
+  onSearch("");
+}
+
 
   return (
     <div className = "search-container">
@@ -34,16 +39,19 @@ function handleClickSuggestion(tag) {
       type="text" 
       id="search_input" 
       onKeyUp = {generateCatTags} 
-      /* write in the input */ 
+
       onChange={(e) => setValue(e.target.value)}
       value={value}
       placeholder = "Search by tag(s)"
       />
 
+      <button onClick={handleClear} title = "Clear tag">
+        Clear tag(s)
+      </button>
 
       {value !== "" && (
       <ul className = "suggestion"> 
- 
+
       {suggestion.map((tag) => 
       (
         <li 
