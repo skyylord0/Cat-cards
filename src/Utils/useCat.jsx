@@ -21,8 +21,6 @@ function useCat(type, tag){
         : "https://cataas.com/cat?json=true";
 
         // add tag in the URL 
-        // if (tag) { endpoint += `&tags=${tag}`; }
-        // if (tag) { endpoint = `https://cataas.com/api/cats?tags=${tag}&skip=0&limit=1`}
         if (tag) { endpoint = `https://cataas.com/api/cats?tags=${tag}`}
         console.log(endpoint)
 
@@ -30,15 +28,15 @@ function useCat(type, tag){
         const res = await fetch(endpoint);
         const jsonData = await res.json();
 
-        // Cas du tag 
+        // Case : tag  
         if (Array.isArray(jsonData)) {
-            // Si la jsonData un array (cas du tag), on choisit au hasard l'index 
+            // if jsonData is an array, pick a random index 
         const randomIndex = Math.floor(Math.random() * jsonData.length)  
             setCatId(jsonData[randomIndex].id) 
             console.log(randomIndex)
         }
         else 
-            // Cas sans tag 
+            // Case : no tag  
         {setCatId(jsonData.id)}
 
         } catch (err) {
@@ -116,8 +114,6 @@ function useCat(type, tag){
 
         // Add the cat ID to pin the specific cat
         base += "/" + catId;
-
-        // Add code to put tags
 
         // If text is added
         if (text !== "") {

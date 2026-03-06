@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 export default function Search_bar({onSearch, tags}) {
-//State
 const [value, setValue] = useState("");
 
 // function to generate cat image with 'enter' key
@@ -34,16 +33,15 @@ function handleClickSuggestion(tag) {
       type="text" 
       id="search_input" 
       onKeyUp = {generateCatTags} 
-      /* write in the input */ 
+
       onChange={(e) => setValue(e.target.value)}
       value={value}
       placeholder = "Search by tag(s)"
       />
 
-      /* show list suggestion */
       {value !== "" && (
       <ul className = "suggestion"> 
-      /* for each elt */ 
+      
       {suggestion.map((tag) => 
       (
         <li 

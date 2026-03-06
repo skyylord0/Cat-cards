@@ -159,7 +159,7 @@
   font-weight: bold;
 }
 
-/* Suggestion CSS class name*/ 
+/* Suggestion CSS */ 
 .search-container {
   position: relative;
   display: inline-block;
@@ -167,7 +167,7 @@
 
 .suggestion {
   position: absolute;
-  top: 100%; /* Juste en dessous de l'input */
+  top: 100%; /* dropdown appears below the input */
   left: 0;
   right: 0;
   z-index: 100;
@@ -178,7 +178,7 @@
   margin: 4px 0 0 0;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  max-height: 200px; /* Évite que la liste soit trop longue */
-  overflow-y: auto;  /* Scroll si trop de tags */
+  max-height: 200px; /* Prevents the list from becoming too long */
+  overflow-y: auto;  /* Scroll if too many tags */
   text-align: left;
 }
