@@ -12,7 +12,10 @@ function App() {
   const [inputText, setInputText] = useState(""); // live typing
   const [catId, setCatId] = useState(null);   // pinned cat ID
   const [loading, setLoading] = useState(false);
+  // TAG 
   const [tag, setTag] = useState(""); // default -> no tag 
+  const [allTags, setAllTags] = useState([]);
+
   const [listDisplay, setListDisplay] = useState(false)
 
 
@@ -23,6 +26,27 @@ function App() {
         console.log(tag);
       }
     }, [tag]);
+
+    // useEffect (fetchTags) 
+    // Initial fetch, first time
+    useEffect(() => {
+      // fetchTags function via API 
+      async function fetchTags() {
+        try {
+          const res = await fetch("https://cataas.com/api/tags");
+          const data = await res.json();
+
+          //Store data in allTags 
+          setAllTags(data)
+        }
+        catch (err) {
+          console.error("Failed to fetch tags", err);
+        }
+      }
+      fetchTags();
+    }, [])
+
+
 
   // Fetch a new random cat and store its ID
   async function handleNewCat() {
@@ -122,7 +146,9 @@ function App() {
                 💬 Add Caption
                 </button>
                   <Search_bar 
-                  onSearch={handleAddTag}/>
+                  onSearch={handleAddTag}
+                  tags={allTags}
+                  />
                 
                 <button onClick={handleDownload} disabled={!catId}>
                 ⬇️ Download

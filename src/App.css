@@ -131,3 +131,22 @@
   margin-bottom: 40px;
   font-weight: bold;
 }
+
+/* Suggestion CSS */ 
+.suggestion {
+  position: absolute;
+  top: 100%; /* Juste en dessous de l'input */
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: #ffffff;
+  color: #333;
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  max-height: 200px; /* Évite que la liste soit trop longue */
+  overflow-y: auto;  /* Scroll si trop de tags */
+  text-align: left;
+}
